@@ -1,0 +1,57 @@
+Mailcar
+=======
+
+Mailcar 0.1
+
+Mailcar is a dead-simple (ie. not many features) bulk emailer for Ruby on Rails, using ActiveRecord
+and ActionMailer.
+
+If you need to send emails to your entire user base and don't want to pay the high prices that most
+mass email services charge, then this is the plugin for you!
+
+WARNING!!! Using this without having your SMTP server set up correctly could land your server on
+hundreds of blacklists.  If that prospects scares you, look at the pay-to-send bulk emailers.  It's
+expensive, but at least you know you're safe.
+
+WARNING!!! As is, this script is tied tightly to the codebase I wrote it for.  It will not work out
+of the box.  I'm posting it in the hopes that someone else needs something similar and doesn't want to
+start from scratch.  Please send me patches or pull requests with your upgrades and I'll include them
+and add you to the credits.
+
+Installation
+============
+To copy the models and create the migration, run:
+
+script/generate mailcar all
+
+Then execute the migration:
+
+rake db:migrate
+
+
+Example
+=======
+
+To send a new bulk email, you must first create the message body file.  I use Thunderbird to create an
+HTML email, then save it out as HTML.
+
+At that point, you can create the message and send it as follows:
+
+rake mailcar:new_message FROM='me@mydomain.com' SUBJECT='New features on the site' BODY_FILE=/path/to/email/body
+rake mailcar:prep_for_send MESSAGE_ID=99
+rake mailcar:send MESSAGE_ID=99
+
+If the sending process is ever interrupted, you can resume it with another call to send.
+
+
+TODO
+====
+* Add a test suite (wish I knew more about plugin testing...)
+* Make it easy to give a block (or something) to generate the list of email addresses
+* Pass emails through ERB to allow for templating / dynamic emails
+* Add support for multipart emails
+* Add a cleanup task to remove old messages
+* Make sending delay configurable
+
+
+Copyright (c) 2009 [Micah Wedemeyer], released under the MIT license
